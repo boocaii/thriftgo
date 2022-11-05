@@ -59,3 +59,45 @@ func checkrule(node *node32, rule pegRule) (*node32, error) {
 	}
 	return node.up, nil
 }
+
+func SplitStrings(s string) []string {
+	ss := []string{}
+	for _, t := range strings.Split(s, ",") {
+		if t != "" {
+			ss = append(ss, t)
+		}
+	}
+	return ss
+}
+
+func NewStringSet() *StringSet {
+	return &StringSet{s: make(map[string]struct{})}
+}
+
+type StringSet struct {
+	s map[string]struct{}
+}
+
+func (set *StringSet) Add(ss ...string) {
+	for _, s := range ss {
+		set.s[s] = struct{}{}
+	}
+}
+
+func (set *StringSet) Contains(s string) bool {
+	_, ok := set.s[s]
+	// fmt.Printf("StringSet.Contains %s, ok: %v\n", s, ok)
+	return ok
+}
+
+func (set *StringSet) Empty() bool {
+	return len(set.s) == 0
+}
+
+func (set *StringSet) String() string {
+	ss := []string{}
+	for s := range set.s {
+		ss = append(ss, s)
+	}
+	return fmt.Sprintf("%#v", ss)
+}
