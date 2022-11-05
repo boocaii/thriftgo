@@ -52,6 +52,7 @@ type Arguments struct {
 	Plugins      StringSlice
 	Langs        StringSlice
 	IDL          string
+	ReserveOnly  string
 }
 
 // Output returns an output path for generated codes for the target language.
@@ -146,6 +147,9 @@ func (a *Arguments) BuildFlags() *flag.FlagSet {
 
 	f.BoolVar(&a.CheckKeyword, "check-keywords", true, "")
 
+	f.StringVar(&a.ReserveOnly, "ro", "", "")
+	f.StringVar(&a.ReserveOnly, "reserve_only", "", "")
+
 	f.Usage = help
 	return f
 }
@@ -188,6 +192,7 @@ Options:
                       "false", "true" and "" (empty is treated as "true").
   -p, --plugin STR    Specify an external plugin to invoke.
                       STR has the form plugin[=path][:key1=val1[,key2[,key3=val3]]].
+  -ro,--reserve_only  Reserve only specified names. Like, -ro=Foo,Bar
   --check-keywords    Check if any identifer using a keyword in common languages. 
 
 Available generators (and options):
