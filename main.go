@@ -73,13 +73,9 @@ func main() {
 
 	check(semantic.ResolveSymbols(ast))
 
-	// for n, c := range ast.Name2Category {
-	// 	fmt.Printf("%s -> %s\n", n, c)
-	// }
-	// fmt.Println()
+	parser.Prune(ast, parser.SplitStrings(a.ReserveOnly))
 
-	// Crop symbols except specified in argument ro/reserve_only
-	parser.Crop(ast, parser.SplitStrings(a.ReserveOnly))
+	check(semantic.ResolveSymbols(ast))
 
 	req := &plugin.Request{
 		Version:    Version,

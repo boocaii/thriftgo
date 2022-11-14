@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 )
 
@@ -70,8 +71,15 @@ func SplitStrings(s string) []string {
 	return ss
 }
 
-func NewStringSet() *StringSet {
-	return &StringSet{s: make(map[string]struct{})}
+func fileNameWithoutExt(path string) string {
+	fileName := filepath.Base(path)
+	return fileName[:len(fileName)-len(filepath.Ext(fileName))]
+}
+
+func NewStringSet(ss ...string) *StringSet {
+	s := &StringSet{s: make(map[string]struct{})}
+	s.Add(ss...)
+	return s
 }
 
 type StringSet struct {
@@ -88,6 +96,18 @@ func (set *StringSet) Contains(s string) bool {
 	_, ok := set.s[s]
 	// fmt.Printf("StringSet.Contains %s, ok: %v\n", s, ok)
 	return ok
+}
+
+func (set *StringSet) ToSlice() []string {
+	ss := []string{}
+	for s := range set.s {
+		ss = append(ss, s)
+	}
+
+	sort.Slice(ss, func(i, j int) bool {
+		return strings.ToLower(ss[i]) < strings.ToLower(ss[j])
+	})
+	return ss
 }
 
 func (set *StringSet) Empty() bool {
