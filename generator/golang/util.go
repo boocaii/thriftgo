@@ -185,6 +185,15 @@ func (cu *CodeUtils) GetFilename(t *parser.Thrift) string {
 	return full
 }
 
+func (cu *CodeUtils) GetRWFilename(t *parser.Thrift) string {
+	ref, _, _ := cu.ParseNamespace(t)
+	full := ref + "_rw.go"
+	if strings.HasSuffix(full, "_test.go") {
+		full = strings.ReplaceAll(full, "_test.go", "_test_rw.go")
+	}
+	return full
+}
+
 // CombineOutputPath read the output and path variables and render them into the final path
 func (cu *CodeUtils) CombineOutputPath(outputPath string, t *parser.Thrift) string {
 	hasVarNamespace := strings.Contains(outputPath, "{namespace}")

@@ -85,14 +85,6 @@ var fieldIDToName_{{$TypeName}} = map[int16]string{
 
 {{template "FieldIsSet" .}}
 
-{{template "StructLikeRead" .}}
-
-{{template "StructLikeReadField" .}}
-
-{{template "StructLikeWrite" .}}
-
-{{template "StructLikeWriteField" .}}
-
 func (p *{{$TypeName}}) String() string {
 	if p == nil {
 		return "<nil>"
@@ -114,6 +106,21 @@ func (p *{{$TypeName}}) Error() string {
 {{- end}}
 
 {{- end}}{{/* define "StructLike" */}}
+`
+
+// StructLikeRW is the code template for read/write methods of struct, union, exception
+var StructLikeRW = `
+{{define "StructLikeRW"}}
+
+{{template "StructLikeRead" .}}
+
+{{template "StructLikeReadField" .}}
+
+{{template "StructLikeWrite" .}}
+
+{{template "StructLikeWriteField" .}}
+
+{{- end}}{{/* define "StructLikeRW" */}}
 `
 
 // StructLikeDefault is the code template for structure initialization.

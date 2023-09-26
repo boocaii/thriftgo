@@ -37,6 +37,7 @@ import (
 type GoBackend struct {
 	err              error
 	tpl              *template.Template
+	rwTpl            *template.Template
 	refTpl           *template.Template
 	reflectionTpl    *template.Template
 	reflectionRefTpl *template.Template
@@ -129,6 +130,12 @@ func (g *GoBackend) prepareTemplates() {
 	}
 	g.tpl = all
 
+	rwTpl := template.New("thrift-rw").Funcs(g.funcs)
+	for _, tpl := range templates.TemplatesRW() {
+		rwTpl = template.Must(rwTpl.Parse(tpl))
+	}
+	g.rwTpl = rwTpl
+
 	g.refTpl = template.Must(template.New("thrift-ref").Funcs(g.funcs).Parse(ref_tpl.File))
 	g.reflectionTpl = template.Must(template.New("thrift-reflection").Funcs(g.funcs).Parse(reflection_tpl.File))
 	g.reflectionRefTpl = template.Must(template.New("thrift-reflection-util").Funcs(g.funcs).Parse(reflection_tpl.FileRef))
@@ -177,6 +184,11 @@ func (g *GoBackend) renderOneFile(ast *parser.Thrift) error {
 		return err
 	}
 	err = g.renderByTemplate(localScope, g.tpl, filename)
+	if err != nil {
+		return err
+	}
+	rwFilename := filepath.Join(path, g.utils.GetRWFilename(ast))
+	err = g.renderByTemplate(localScope, g.rwTpl, rwFilename)
 	if err != nil {
 		return err
 	}

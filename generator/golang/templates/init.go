@@ -29,12 +29,32 @@ func Templates() []string {
 		File, Imports, Constant, Enum, Typedef,
 		StructLike,
 		StructLikeDefault,
+		FieldGetOrSet,
+		FieldIsSet,
+		StructLikeDeepEqual,
+		StructLikeDeepEqualField,
+		FieldDeepEqual,
+		FieldDeepEqualBase,
+		FieldDeepEqualContainer,
+		FieldDeepEqualStructLike,
+		FunctionSignature, Service, Client, Processor,
+	}
+}
+
+// TemplatesRW .
+func TemplatesRW() []string {
+	return []string{
+		FileRW,
+		Imports,
+		StructLike,
+		StructLikeDefault,
+		FieldGetOrSet,
+		FieldIsSet,
+		StructLikeRW,
 		StructLikeRead,
 		StructLikeReadField,
 		StructLikeWrite,
 		StructLikeWriteField,
-		FieldGetOrSet,
-		FieldIsSet,
 		FieldRead,
 		FieldReadStructLike,
 		FieldReadBaseType,
@@ -55,6 +75,6 @@ func Templates() []string {
 		FieldDeepEqualBase,
 		FieldDeepEqualContainer,
 		FieldDeepEqualStructLike,
-		FunctionSignature, Service, Client, Processor,
+		ProcessorRW,
 	}
 }

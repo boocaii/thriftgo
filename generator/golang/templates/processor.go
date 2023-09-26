@@ -79,6 +79,15 @@ func (p *{{$ProcessorName}}) Process(ctx context.Context, iprot, oprot thrift.TP
 }
 {{- end}}
 
+{{- end}}{{/* define "Processor" */}}
+`
+
+// ProcessorRW .
+var ProcessorRW = `
+{{define "ProcessorRW"}}
+{{- $ServiceName := .GoName}}
+{{- $ProcessorName := printf "%s%s" $ServiceName "Processor"}}
+
 {{- range .Functions}}
 {{$FuncName := .GoName}}
 {{$ProcessName := print ($ProcessorName | Unexport) $FuncName}}
@@ -171,10 +180,13 @@ func (p *{{$ProcessName}}) Process(ctx context.Context, seqId int32, iprot, opro
 {{- range .Functions}}
 {{$ArgsType := .ArgType}}
 {{template "StructLike" $ArgsType}}
+{{template "StructLikeRW" $ArgsType}}
 {{- if not .Oneway}}
 	{{$ResType := .ResType}}
 	{{template "StructLike" $ResType}}
+	{{template "StructLikeRW" $ResType}}
 {{- end}}
 {{- end}}{{/* range .Functions */}}
-{{- end}}{{/* define "Processor" */}}
+
+{{- end}}{{/* define "ProcessorRW" */}}
 `
